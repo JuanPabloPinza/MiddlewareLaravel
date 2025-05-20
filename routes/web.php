@@ -1,58 +1,28 @@
 <?php
-
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\AdolescentesController;
-use App\Http\Controllers\AdultosController;
-use App\Http\Controllers\BebesController;
-use App\Http\Controllers\EdadController;
-use App\Http\Controllers\JovenesController;
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\LongevosController;
-use App\Http\Controllers\MayoresController;
-use App\Http\Controllers\NinosController;
-use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Portal\BebeController;
+use App\Http\Controllers\Portal\NinoController;
+use App\Http\Controllers\Portal\AdolescenteController;
+use App\Http\Controllers\Portal\JovenAdultoController;
+use App\Http\Controllers\Portal\AdultoController;
+use App\Http\Controllers\Portal\AdultoMayorController;
+use App\Http\Controllers\Portal\PersonaLongevaController;
+use App\Http\Controllers\Portal\ErrorController;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('portal.inicio');
+
+Route::post('/verificar-edad', function () {
+})->middleware('age.classifier')->name('portal.verificarEdad');
 
 
-Route::get('/login', [LoginController::class, 'index'])->name('login');
-Route::get('/admin', [AdminController::class, 'index'])->name('admin');
-Route::get('/user', [UserController::class, 'index'])->name('user');
+Route::get('/bebes', BebeController::class)->name('portal.bebes');
+Route::get('/ninos', NinoController::class)->name('portal.ninos');
+Route::get('/adolescentes', AdolescenteController::class)->name('portal.adolescentes');
+Route::get('/jovenes', JovenAdultoController::class)->name('portal.jovenes');
+Route::get('/adultos', AdultoController::class)->name('portal.adultos');
+Route::get('/mayores', AdultoMayorController::class)->name('portal.mayores');
+Route::get('/longevos', PersonaLongevaController::class)->name('portal.longevos');
 
-Route::post('/edad', [EdadController::class, 'store'])->name('edad.store');
-
-Route::get('/bebes', [BebesController::class, 'index']);
-Route::get('/ninos', [NinosController::class, 'index']);
-Route::get('/adolescentes', [AdolescentesController::class, 'index']);
-Route::get('/jovenes', [JovenesController::class, 'index']);
-Route::get('/adultos', [AdultosController::class, 'index']);
-Route::get('/mayores', [MayoresController::class, 'index']);
-Route::get('/longevos', [LongevosController::class, 'index']);
-
-
-Route::middleware(['auth'])->group(function () {
-    Route::get('/admin', [AdminController::class, 'index'])->name('admin');
-});
-
-Route::middleware(['auth'])->group(function () {
-    Route::get('/user', [UserController::class, 'index'])->name('user');
-});
-
-Route::get('/redirigir/{edad}', function ($edad) {
-    if ($edad >= 0 && $edad <= 5) return redirect('/bebes');
-    if ($edad >= 6 && $edad <= 12) return redirect('/ninos');
-    if ($edad >= 13 && $edad <= 17) return redirect('/adolescentes');
-    if ($edad >= 18 && $edad <= 25) return redirect('/jovenes');
-    if ($edad >= 26 && $edad <= 59) return redirect('/adultos');
-    if ($edad >= 60 && $edad <= 74) return redirect('/mayores');
-    if ($edad >= 75 && $edad <= 120) return redirect('/longevos');
-
-    abort(404);
-})->name('redirigir.edad');
-
-Route::get('/dummy/{edad}', function () {
-    return "Redireccionando...";
-})->middleware('edad.redirect')->name('dummy');
+Route::get('/error-edad', ErrorController::class)->name('portal.error.edadInvalida');
