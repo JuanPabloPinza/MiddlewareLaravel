@@ -1,61 +1,81 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Sistema de Clasificación por Edad para Salud Preventiva (Laravel + PostgreSQL)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Este proyecto es un sistema web desarrollado en Laravel que clasifica a las personas según su edad antes de permitirles el acceso a secciones informativas y servicios adecuados a su rango etario. Este flujo ocurre antes de cualquier registro o autenticación.
 
-## About Laravel
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Tecnologías Utilizadas
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+*   **Framework:** Laravel 12
+*   **Lenguaje:** PHP 
+*   **Base de Datos:** PostgreSQL
+*   **Gestor de Dependencias PHP:** Composer
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Prerrequisitos
 
-## Learning Laravel
+Antes de comenzar, asegúrate de tener instalado lo siguiente en tu sistema:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+*   PHP (>= 8.1 recomendado para Laravel 11)
+*   Composer
+*   Node.js y npm (opcional, pero recomendado si deseas compilar assets)
+*   PostgreSQL (servidor de base de datos)
+*   La extensión `pdo_pgsql` de PHP habilitada. Puedes verificar con `php -m | grep pdo_pgsql`.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Instalación y Configuración
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Sigue estos pasos para configurar el proyecto en tu entorno local:
 
-## Laravel Sponsors
+1.  **Clonar el Repositorio:**
+    ```bash
+    git clone <URL_DEL_REPOSITORIO>
+    cd nombre-del-directorio-del-proyecto
+    ```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+2.  **Instalar Dependencias de PHP:**
+    ```bash
+    composer install
+    ```
 
-### Premium Partners
+3.  **Configurar el Archivo de Entorno (`.env`):**
+    *   Copia el archivo de ejemplo `.env.example` a `.env`:
+        ```bash
+        cp .env.example .env
+        ```
+    *   Abre el archivo `.env` y configura las variables de entorno, especialmente las de la base de datos PostgreSQL:
+        ```env
+        APP_NAME="Sistema Salud Edad"
+        APP_ENV=local
+        APP_KEY=
+        APP_DEBUG=true
+        APP_URL=http://localhost:8000 # O la URL que uses
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+        DB_CONNECTION=pgsql
+        DB_HOST=127.0.0.1
+        DB_PORT=5432
+        DB_DATABASE=db_sistema_salud_edad # Asegúrate de que esta base de datos exista en PostgreSQL
+        DB_USERNAME=postgres # Tu usuario de PostgreSQL
+        DB_PASSWORD=tu_contraseña_segura # Tu contraseña de PostgreSQL
+        ```
+    *   **Importante:** Asegúrate de haber creado la base de datos `db_sistema_salud_edad` (o el nombre que elijas) en tu servidor PostgreSQL antes de continuar. Puedes usar `psql` o una herramienta como pgAdmin:
+        ```sql
+        -- Ejemplo con psql
+        CREATE DATABASE db_sistema_salud_edad;
+        ```
 
-## Contributing
+4.  **Generar la Clave de Aplicación Laravel:**
+    ```bash
+    php artisan key:generate
+    ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+5.  **Ejecutar las Migraciones de la Base de Datos:**
+    Esto creará las tablas necesarias, incluyendo `age_logs`.
+    ```bash
+    php artisan migrate
+    ```
 
-## Code of Conduct
+## Ejecutar la Aplicación
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Para iniciar el servidor de desarrollo de Laravel, ejecuta:
 
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+php artisan serve
+ ```
